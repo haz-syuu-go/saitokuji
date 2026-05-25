@@ -327,6 +327,69 @@ p { font-size: 13.5px; color: var(--color-text-soft); }
 .news-thumb:nth-child(3) { background: var(--color-bg-accent); }
 .news-thumb:hover { transform: translateY(-3px); }
 
+/* ============ ブログバナー（ふたりごと） ============ */
+.blog-banner-wrap {
+  max-width: var(--max-w);
+  margin: 32px auto 0;
+  padding: 0 48px;
+}
+.blog-banner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 28px 36px;
+  background: var(--color-bg-warm);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+.blog-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  background: var(--color-bg-accent);
+}
+.blog-banner-label {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--color-noren);
+  writing-mode: vertical-rl;
+  padding: 8px 0;
+  border-left: 1px solid var(--color-noren);
+  padding-left: 10px;
+}
+.blog-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.blog-banner-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--color-dark);
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+.blog-banner-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+}
+.blog-banner-arrow {
+  font-size: 18px;
+  color: var(--color-noren);
+  transition: transform 0.4s ease;
+}
+.blog-banner:hover .blog-banner-arrow { transform: translateX(6px); }
+@media (max-width: 720px) {
+  .blog-banner-wrap { padding: 0 24px; }
+  .blog-banner { grid-template-columns: auto 1fr auto; gap: 18px; padding: 22px 22px; }
+  .blog-banner-title { font-size: 17px; }
+  .blog-banner-label { font-size: 9px; padding-left: 8px; }
+}
+
 /* ============ 主要コンテンツ 5枠 ============ */
 .contents-grid {
   display: grid;
@@ -641,6 +704,17 @@ p { font-size: 13.5px; color: var(--color-text-soft); }
         <div class="news-thumb"></div>
         <div class="news-thumb"></div>
       </div>
+    </div>
+    <!-- 住職・坊守のふたりごと（ブログ）バナー -->
+    <div class="blog-banner-wrap">
+      <a class="blog-banner" href="#" target="_blank" rel="noopener">
+        <div class="blog-banner-label">BLOG</div>
+        <div class="blog-banner-body">
+          <div class="blog-banner-title">住職・坊守のふたりごと</div>
+          <div class="blog-banner-sub">日々のことを、ふたりで綴っています。</div>
+        </div>
+        <div class="blog-banner-arrow">→</div>
+      </a>
     </div>
   </section>
 
