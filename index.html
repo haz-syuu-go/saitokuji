@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最徳寺 | SAITOKUJI</title>
+<meta name="description" content="浄土真宗本願寺派 最徳寺。永代供養墓・ペット墓・墓じまいのご相談、おてらゆうびんきょく・休憩所のごあんない。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@200;300;400;500;700&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   最徳寺 サイトリニューアル ダミーページ
+   - 構成: 議事メモのサイトマップ準拠（5枠）
+   - フォント: Noto Sans JP（本文）/ Noto Serif JP（見出し控えめ併用）
+   - キーカラー: オイスターホワイト（のれん由来）
+   - 想定: スマホ・PCレスポンシブ、ページ切り替えフェードアニメーション
+   ============================================ */
+
+:root {
+  --color-bg-base:    #f6f1e7;  /* オイスターホワイト（メイン） */
+  --color-bg-paper:   #fbf8f1;  /* 紙のような淡いベース */
+  --color-bg-deep:    #efe7d4;  /* やや濃いめ */
+  --color-bg-warm:    #e8dec6;  /* 温かみのある中間色 */
+  --color-bg-accent:  #d4c3a3;  /* アクセント（木・土の色） */
+  --color-text-main:  #2b2723;  /* 本文の墨色 */
+  --color-text-soft:  #5c544a;  /* 説明文用 */
+  --color-text-muted: #8a7f6e;  /* キャプション・ラベル */
+  --color-line:       #e6dfd0;  /* 罫線 */
+  --color-dark:       #3a342c;  /* 濃色アクセント */
+  --color-noren:      #6b5d49;  /* のれんの上部の色 */
+
+  --font-sans:  'Noto Sans JP', sans-serif;
+  --font-serif: 'Noto Serif JP', serif;
+
+  --max-w: 1080px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--color-text-main);
+  background: var(--color-bg-base);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.04em;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ============ ページ切り替えアニメーション ============ */
+/* 各 .page を表示/非表示で切り替え。フェード＋わずかに上昇 */
+.page {
+  display: none;
+  animation: pageFade 0.6s ease-out;
+}
+.page.active { display: block; }
+
+@keyframes pageFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* スクロールでの段差リビール */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============ ヘッダー ============ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 248, 241, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 0.5px solid var(--color-line);
+}
+.header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--color-dark);
+  color: var(--color-bg-paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 16px;
+}
+.logo-text { font-family: var(--font-serif); font-size: 15px; color: var(--color-dark); }
+.logo-sub  { font-size: 9px; color: var(--color-text-muted); letter-spacing: 0.2em; }
+
+.nav {
+  display: flex;
+  gap: 28px;
+  font-size: 12px;
+  color: var(--color-text-soft);
+}
+.nav a { cursor: pointer; padding: 4px 0; border-bottom: 1px solid transparent; transition: border-color 0.3s, color 0.3s; }
+.nav a:hover { color: var(--color-dark); border-color: var(--color-text-muted); }
+.nav a.active { color: var(--color-dark); border-color: var(--color-dark); }
+
+.nav-toggle {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  font-size: 24px; color: var(--color-dark);
+}
+
+/* ============ ヒーロー ============ */
+.hero {
+  position: relative;
+  min-height: 480px;
+  background: linear-gradient(180deg, var(--color-bg-deep) 0%, var(--color-bg-warm) 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* のれん */
+.noren {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  pointer-events: none;
+  animation: norenSway 6s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes norenSway {
+  0%, 100% { transform: translateX(-50%) rotate(-0.3deg); }
+  50%      { transform: translateX(-50%) rotate(0.3deg); }
+}
+.noren-top { height: 16px; background: var(--color-noren); }
+.noren-cloth {
+  height: 220px;
+  background: var(--color-bg-paper);
+  display: flex;
+  position: relative;
+}
+.noren-cloth::before,
+.noren-cloth::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--color-line);
+}
+.noren-cloth::before { left: 33.3%; }
+.noren-cloth::after  { left: 66.6%; }
+.noren-title {
+  position: absolute;
+  top: 60px;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--color-dark);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+}
+
+/* ヒーローのコピー */
+.hero-copy {
+  position: absolute;
+  bottom: 56px;
+  left: 48px;
+  max-width: 280px;
+  z-index: 2;
+}
+.hero-copy .lead {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--color-dark);
+  line-height: 2.1;
+  letter-spacing: 0.1em;
+}
+
+/* あーみさん（子仏さん） */
+.aami {
+  position: absolute;
+  bottom: 32px;
+  right: 64px;
+  width: 100px;
+  height: 130px;
+  z-index: 2;
+}
+.aami-body {
+  width: 100%; height: 100%;
+  background: var(--color-bg-accent);
+  border-radius: 50px 50px 28px 28px;
+  position: relative;
+}
+.aami-face {
+  position: absolute;
+  top: 35px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+}
+.aami-eye {
+  width: 5px; height: 5px;
+  background: var(--color-dark);
+  border-radius: 50%;
+}
+.aami-mouth {
+  position: absolute;
+  top: 50px; left: 50%;
+  transform: translateX(-50%);
+  width: 8px; height: 3px;
+  border-bottom: 1.5px solid var(--color-dark);
+  border-radius: 0 0 50% 50%;
+}
+.aami-label {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ============ 共通セクション ============ */
+.section {
+  padding: 88px 48px;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.section-tight { padding: 56px 48px; }
+
+.section-head { text-align: center; margin-bottom: 56px; }
+.section-head.left { text-align: left; }
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+h1.page-title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 400;
+  color: var(--color-dark);
+  letter-spacing: 0.08em;
+}
+h2.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 400;
+  color: var(--color-dark);
+  letter-spacing: 0.08em;
+}
+h3.card-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+p { font-size: 13.5px; color: var(--color-text-soft); }
+.crumb { font-size: 11px; color: var(--color-text-muted); letter-spacing: 0.1em; margin-bottom: 16px; }
+
+/* ============ お知らせ / Instagram ============ */
+.news {
+  background: var(--color-bg-paper);
+  padding: 72px 0;
+}
+.news-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 56px;
+  align-items: start;
+}
+.news-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.news-thumb {
+  aspect-ratio: 1;
+  background: var(--color-bg-deep);
+  border-radius: 4px;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+.news-thumb:nth-child(2) { background: var(--color-bg-warm); }
+.news-thumb:nth-child(3) { background: var(--color-bg-accent); }
+.news-thumb:hover { transform: translateY(-3px); }
+
+/* ============ 主要コンテンツ 5枠 ============ */
+.contents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+/* 議事メモのサイトマップ準拠で5枠:
+   1.最徳寺について 2.お墓・墓じまい・ペット 3.境内案内 4.行事案内 5.おてらゆうびんきょく */
+.content-card {
+  background: var(--color-bg-paper);
+  padding: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.content-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(58, 52, 44, 0.08);
+}
+.content-card .thumb {
+  height: 140px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+.content-card:nth-child(1) .thumb { background: var(--color-bg-deep); }
+.content-card:nth-child(2) .thumb { background: var(--color-bg-warm); }
+.content-card:nth-child(3) .thumb { background: var(--color-bg-accent); color: var(--color-text-soft); }
+.content-card:nth-child(4) .thumb { background: var(--color-bg-deep); }
+.content-card:nth-child(5) .thumb {
+  background: var(--color-bg-paper);
+  border: 0.5px solid var(--color-line);
+  /* おてらゆうびんきょく専用にのれん風の罫線をうっすら */
+  background-image: linear-gradient(90deg, transparent 33%, var(--color-line) 33%, var(--color-line) 33.5%, transparent 33.5%, transparent 66.5%, var(--color-line) 66.5%, var(--color-line) 67%, transparent 67%);
+}
+.card-en {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.2em;
+  margin-top: 6px;
+}
+
+/* ============ おてらゆうびんきょく 帯 ============ */
+.yubin {
+  background: var(--color-bg-paper);
+  padding: 88px 0;
+  border-top: 0.5px solid var(--color-line);
+}
+.yubin-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  align-items: center;
+}
+.yubin-image {
+  height: 200px;
+  background: var(--color-bg-deep);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--color-text-muted);
+}
+.btn {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 12px 28px;
+  border: 0.5px solid var(--color-noren);
+  font-size: 12px;
+  color: var(--color-text-soft);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.btn:hover { background: var(--color-noren); color: var(--color-bg-paper); }
+.btn-primary {
+  background: var(--color-dark);
+  color: var(--color-bg-paper);
+  border-color: var(--color-dark);
+}
+.btn-primary:hover { background: var(--color-noren); border-color: var(--color-noren); }
+
+/* ============ アクセス ============ */
+.access-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.access-info p { margin-bottom: 12px; }
+.access-info .temple-name {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--color-dark);
+  margin-bottom: 16px;
+}
+.access-map {
+  height: 280px;
+  background: var(--color-bg-warm);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--color-text-muted);
+}
+
+/* ============ 下層: お墓ページ ============ */
+.subpage-header {
+  background: var(--color-bg-paper);
+  padding: 56px 48px 40px;
+}
+.subpage-header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.subpage-lead {
+  background: var(--color-bg-paper);
+  padding: 24px 48px 64px;
+}
+.subpage-lead-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.subpage-lead p { max-width: 540px; }
+
+.feature-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.feature-image {
+  height: 280px;
+  background: var(--color-bg-warm);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--color-text-muted);
+}
+.feature-image.deep { background: var(--color-bg-deep); }
+.feature-image.accent { background: var(--color-bg-accent); color: var(--color-text-soft); }
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.type-card {
+  background: var(--color-bg-base);
+  padding: 24px;
+  border-radius: 4px;
+}
+.type-card .thumb {
+  height: 110px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.type-card:nth-child(1) .thumb { background: var(--color-bg-deep); }
+.type-card:nth-child(2) .thumb { background: var(--color-bg-warm); }
+.type-card:nth-child(3) .thumb { background: var(--color-bg-accent); }
+
+.note-box {
+  margin-top: 20px;
+  padding: 20px 24px;
+  background: var(--color-bg-paper);
+  border-left: 2px solid var(--color-noren);
+  font-size: 12.5px;
+  color: var(--color-text-soft);
+  line-height: 2.1;
+}
+
+.cta {
+  text-align: center;
+  background: var(--color-bg-paper);
+  padding: 80px 48px;
+  border-top: 0.5px solid var(--color-line);
+}
+.cta p { max-width: 440px; margin: 12px auto 28px; }
+.cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ============ フッター ============ */
+.footer {
+  background: var(--color-dark);
+  color: var(--color-bg-accent);
+  padding: 48px;
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-logo {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--color-bg-paper);
+}
+.footer-logo-sub {
+  font-size: 9px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.footer-links a { cursor: pointer; transition: color 0.3s; }
+.footer-links a:hover { color: var(--color-bg-paper); }
+.footer-copy {
+  width: 100%;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 0.5px solid #5c544a;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ============ レスポンシブ ============ */
+@media (max-width: 880px) {
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-bg-paper); flex-direction: column; padding: 24px 32px; gap: 16px; border-bottom: 0.5px solid var(--color-line); }
+  .nav.open { display: flex; }
+  .nav-toggle { display: block; }
+
+  .section, .section-tight { padding: 64px 24px; }
+  .news-grid, .yubin-inner, .access-grid, .feature-split { grid-template-columns: 1fr; gap: 32px; }
+  .contents-grid { grid-template-columns: repeat(2, 1fr); }
+  .type-grid { grid-template-columns: 1fr; }
+  .subpage-header, .subpage-lead, .news { padding-left: 24px; padding-right: 24px; }
+  .hero-copy { left: 24px; bottom: 32px; }
+  .aami { right: 24px; }
+  .noren { width: 240px; }
+  .noren-title { font-size: 28px; top: 50px; }
+}
+
+@media (max-width: 540px) {
+  .contents-grid { grid-template-columns: 1fr; }
+  .header-inner { padding: 14px 24px; }
+  .footer { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ヘッダー（全ページ共通） ============ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('home')">
+      <div class="logo-mark">最</div>
+      <div>
+        <div class="logo-text">最徳寺</div>
+        <div class="logo-sub">SAITOKUJI</div>
+      </div>
+    </div>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="メニュー">☰</button>
+    <nav class="nav" id="nav">
+      <a onclick="showPage('about')">最徳寺について</a>
+      <a onclick="showPage('ohaka')">お墓・墓じまい</a>
+      <a onclick="showPage('keidai')">境内案内</a>
+      <a onclick="showPage('gyoji')">行事案内</a>
+      <a onclick="showPage('yubin')">おてらゆうびんきょく</a>
+      <a onclick="showPage('contact')">お問い合わせ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ ページ1: ホーム ============ -->
+<main id="page-home" class="page active">
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="noren">
+      <div class="noren-top"></div>
+      <div class="noren-cloth">
+        <div class="noren-title">最徳寺</div>
+      </div>
+    </div>
+    <div class="hero-copy">
+      <div class="lead">どなたさまも、<br>ふらりとお立ち寄りください。</div>
+    </div>
+    <!-- あーみさん（子仏さん大） -->
+    <div class="aami">
+      <div class="aami-body">
+        <div class="aami-face">
+          <div class="aami-eye"></div>
+          <div class="aami-eye"></div>
+        </div>
+        <div class="aami-mouth"></div>
+      </div>
+      <div class="aami-label">あーみさん</div>
+    </div>
+  </section>
+
+  <!-- お知らせ -->
+  <section class="news">
+    <div class="news-grid">
+      <div>
+        <div class="label">NEWS</div>
+        <h2 class="section-title">お知らせ</h2>
+        <p style="font-size:11px; color:var(--color-text-muted); margin-top:8px;">Instagram連携</p>
+      </div>
+      <div class="news-thumbs">
+        <div class="news-thumb"></div>
+        <div class="news-thumb"></div>
+        <div class="news-thumb"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主要コンテンツ 5枠（議事メモのサイトマップ準拠） -->
+  <section class="section">
+    <div class="section-head">
+      <div class="label">CONTENTS</div>
+      <h2 class="section-title">最徳寺のごあんない</h2>
+    </div>
+    <div class="contents-grid">
+      <div class="content-card" onclick="showPage('about')">
+        <div class="thumb">本堂・阿弥陀如来像</div>
+        <h3 class="card-title">最徳寺について</h3>
+        <p>歴史と由縁、いまの最徳寺を。</p>
+        <div class="card-en">ABOUT</div>
+      </div>
+      <div class="content-card" onclick="showPage('ohaka')">
+        <div class="thumb">無量壽廟・一処廟</div>
+        <h3 class="card-title">お墓・墓じまい・ペット</h3>
+        <p>永代供養墓、ペット墓、墓じまいのご相談。</p>
+        <div class="card-en">OHAKA</div>
+      </div>
+      <div class="content-card" onclick="showPage('keidai')">
+        <div class="thumb">石灯籠・彫刻・藤</div>
+        <h3 class="card-title">境内案内</h3>
+        <p>本堂、阿弥陀如来像、藤の境内を。</p>
+        <div class="card-en">KEIDAI</div>
+      </div>
+      <div class="content-card" onclick="showPage('gyoji')">
+        <div class="thumb">年間行事カレンダー</div>
+        <h3 class="card-title">行事案内</h3>
+        <p>年間行事と月例会のごあんない。</p>
+        <div class="card-en">GYŌJI</div>
+      </div>
+      <div class="content-card" onclick="showPage('yubin')">
+        <div class="thumb">のれん・休憩所</div>
+        <h3 class="card-title">おてらゆうびんきょく</h3>
+        <p>のれんをくぐって、ひと休み。</p>
+        <div class="card-en">YŪBINKYOKU</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- おてらゆうびんきょく 帯 -->
+  <section class="yubin">
+    <div class="yubin-inner">
+      <div>
+        <div class="label">OTERA YŪBINKYOKU</div>
+        <h2 class="section-title">のれんをくぐって、ひと休み。</h2>
+        <p style="margin-top:16px;">地域の方も、お参りの方も、どなたでもお使いいただける場所です。手紙を書く、本を読む、ただ座る。お寺のあたらしい使い方を、すこしずつ。</p>
+        <span class="btn" onclick="showPage('yubin')">くわしく見る →</span>
+      </div>
+      <div class="yubin-image">のれん・休憩所写真</div>
+    </div>
+  </section>
+
+  <!-- アクセス -->
+  <section class="section">
+    <div class="access-grid">
+      <div class="access-info">
+        <div class="label">ACCESS</div>
+        <h2 class="section-title" style="margin-bottom:24px;">アクセス</h2>
+        <div class="temple-name">浄土真宗本願寺派 最徳寺</div>
+        <p>〒〇〇〇-〇〇〇〇<br>東京都〇〇区〇〇〇〇<br>TEL: 〇〇-〇〇〇〇-〇〇〇〇</p>
+        <p style="font-size:11px; color:var(--color-text-muted); margin-top:16px;">電車：〇〇線〇〇駅より徒歩◯分<br>駐車場：あり</p>
+      </div>
+      <div class="access-map">Google マップ</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ ページ2: 最徳寺について ============ -->
+<main id="page-about" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / 最徳寺について</div>
+      <div class="label">ABOUT</div>
+      <h1 class="page-title">最徳寺について</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>長い歴史のなかで受け継がれてきた最徳寺の由縁を、ご紹介します。</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="feature-split">
+      <div class="feature-image deep">本堂・阿弥陀如来像</div>
+      <div>
+        <div class="label">HISTORY</div>
+        <h2 class="section-title" style="margin-bottom:20px;">歴史と沿革</h2>
+        <p>※ 沿革テキストが入ります。創建から現代までの歩み、地域との関わりなどを記述します。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ページ3: お墓・墓じまい・ペット ============ -->
+<main id="page-ohaka" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / お墓・墓じまい・ペット</div>
+      <div class="label">OHAKA</div>
+      <h1 class="page-title">お墓のごあんない</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>新しい暮らしのかたちに合わせて、お墓もすこしずつ変わっています。最徳寺では永代供養墓、ペット墓、墓じまいのご相談を承っています。どうぞ、お気軽にお尋ねください。</p>
+    </div>
+  </div>
+
+  <!-- 永代供養墓 -->
+  <section class="section">
+    <div class="feature-split">
+      <div class="feature-image">新しいお墓（7月完成予定）</div>
+      <div>
+        <div class="label">EITAI KUYŌ</div>
+        <h2 class="section-title" style="margin-bottom:20px;">永代供養墓「無量壽廟」</h2>
+        <p>後継ぎを必要としない合同墓です。ご家族の事情やお気持ちに合わせて、複数のかたちをご用意しています。</p>
+        <span class="btn">くわしく見る →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- お墓の種類 -->
+  <section class="section">
+    <div class="section-head">
+      <div class="label">TYPES</div>
+      <h2 class="section-title">お墓の種類</h2>
+    </div>
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="thumb"></div>
+        <h3 class="card-title">一般墓</h3>
+        <p style="font-size:12.5px;">代々受け継ぐ、伝統的なお墓のかたち。</p>
+      </div>
+      <div class="type-card">
+        <div class="thumb"></div>
+        <h3 class="card-title">永代供養墓</h3>
+        <p style="font-size:12.5px;">後継ぎを必要としない合同墓。</p>
+      </div>
+      <div class="type-card">
+        <div class="thumb"></div>
+        <h3 class="card-title">ペット墓「一処廟」</h3>
+        <p style="font-size:12.5px;">大切な家族と、おなじ場所で。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 墓じまい -->
+  <section class="section">
+    <div class="feature-split">
+      <div>
+        <div class="label">HAKAJIMAI</div>
+        <h2 class="section-title" style="margin-bottom:20px;">墓じまいのご相談</h2>
+        <p>住まいが遠くなった、後を継ぐ人がいない。さまざまな事情でお墓のあり方を見直す方が増えています。最徳寺では、ご事情にあわせた選択肢をいっしょに考えます。</p>
+        <div class="note-box">
+          ・現在のお墓のご相談<br>
+          ・改葬手続きのご案内<br>
+          ・無量壽廟への移し替え
+        </div>
+      </div>
+      <div class="feature-image accent">藤・境内の写真</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="label">CONTACT</div>
+    <h2 class="section-title">まずは、お気軽にご相談ください</h2>
+    <p>お電話でも、フォームからでも結構です。お急ぎの際はお電話をお願いいたします。</p>
+    <div class="cta-buttons">
+      <span class="btn btn-primary" onclick="showPage('contact')">お問い合わせフォーム</span>
+      <span class="btn">お電話：〇〇-〇〇〇〇-〇〇〇〇</span>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ページ4: 境内案内 ============ -->
+<main id="page-keidai" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / 境内案内</div>
+      <div class="label">KEIDAI</div>
+      <h1 class="page-title">境内案内</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>本堂、阿弥陀如来像、石灯籠、彫刻、藤。境内をご案内します。</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="type-grid">
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">本堂</h3><p style="font-size:12.5px;">※テキスト</p></div>
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">阿弥陀如来像</h3><p style="font-size:12.5px;">※テキスト</p></div>
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">藤・石灯籠</h3><p style="font-size:12.5px;">※テキスト</p></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ページ5: 行事案内 ============ -->
+<main id="page-gyoji" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / 行事案内</div>
+      <div class="label">GYŌJI</div>
+      <h1 class="page-title">行事案内</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>年間行事と月例会のごあんないです。タブで切り替えて閲覧できます（実装予定）。</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="type-grid">
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">年間行事</h3><p style="font-size:12.5px;">※カレンダーまたは一覧形式</p></div>
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">月例会</h3><p style="font-size:12.5px;">※毎月の集まり</p></div>
+      <div class="type-card"><div class="thumb"></div><h3 class="card-title">仏教婦人会・コーラス</h3><p style="font-size:12.5px;">※地域活動</p></div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ページ6: おてらゆうびんきょく ============ -->
+<main id="page-yubin" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / おてらゆうびんきょく・休憩所</div>
+      <div class="label">YŪBINKYOKU</div>
+      <h1 class="page-title">おてらゆうびんきょく</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>のれんをくぐって、ひと休み。お寺のあたらしい使い方を、すこしずつ。</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="feature-split">
+      <div class="feature-image">のれん・休憩所写真</div>
+      <div>
+        <div class="label">ABOUT</div>
+        <h2 class="section-title" style="margin-bottom:20px;">おてらゆうびんきょくとは</h2>
+        <p>地域の方も、お参りの方も、どなたでもお使いいただける場所です。</p>
+        <div class="note-box">
+          ・ご利用時間：〇〇〜〇〇<br>
+          ・休館日：〇〇<br>
+          ・お問い合わせはお気軽に
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ ページ7: お問い合わせ ============ -->
+<main id="page-contact" class="page">
+  <div class="subpage-header">
+    <div class="subpage-header-inner">
+      <div class="crumb">ホーム / お問い合わせ</div>
+      <div class="label">CONTACT</div>
+      <h1 class="page-title">お問い合わせ</h1>
+    </div>
+  </div>
+  <div class="subpage-lead">
+    <div class="subpage-lead-inner">
+      <p>お葬式やお急ぎの場合は、お電話をお願いいたします。<br>TEL: 〇〇-〇〇〇〇-〇〇〇〇</p>
+    </div>
+  </div>
+  <section class="section">
+    <div style="max-width:520px; margin:0 auto;">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:6px;">相談事項</div>
+        <select style="width:100%; padding:10px; border:0.5px solid var(--color-line); background:var(--color-bg-paper); font-family:var(--font-sans); font-size:13px;">
+          <option>選択してください</option>
+          <option>永代供養墓について</option>
+          <option>ペット墓について</option>
+          <option>墓じまいについて</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:6px;">お名前</div>
+        <input type="text" style="width:100%; padding:10px; border:0.5px solid var(--color-line); background:var(--color-bg-paper); font-family:var(--font-sans); font-size:13px;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:6px;">電話番号</div>
+        <input type="tel" style="width:100%; padding:10px; border:0.5px solid var(--color-line); background:var(--color-bg-paper); font-family:var(--font-sans); font-size:13px;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:6px;">メールアドレス</div>
+        <input type="email" style="width:100%; padding:10px; border:0.5px solid var(--color-line); background:var(--color-bg-paper); font-family:var(--font-sans); font-size:13px;">
+      </div>
+      <div style="margin-bottom:24px;">
+        <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:6px;">お問い合わせ内容</div>
+        <textarea rows="6" style="width:100%; padding:10px; border:0.5px solid var(--color-line); background:var(--color-bg-paper); font-family:var(--font-sans); font-size:13px; resize:vertical;"></textarea>
+      </div>
+      <div style="text-align:center;">
+        <span class="btn btn-primary">送信する</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ フッター（全ページ共通） ============ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">最徳寺</div>
+      <div class="footer-logo-sub">SAITOKUJI</div>
+    </div>
+    <div class="footer-links">
+      <a href="#" target="_blank">JUGEMブログ</a>
+      <a href="#" target="_blank">LINE</a>
+      <a href="#" target="_blank">Instagram</a>
+      <a onclick="showPage('contact')">お問い合わせ</a>
+    </div>
+    <div class="footer-copy">© Saitokuji All Rights Reserved.</div>
+  </div>
+</footer>
+
+<script>
+// ============================================
+// ページ切り替え（SPA風フェードアニメーション）
+// ============================================
+function showPage(pageId) {
+  // 全ページを非表示
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // 対象ページを表示（CSSのpageFadeアニメーションが発火）
+  const target = document.getElementById('page-' + pageId);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // ナビ閉じる（モバイル）
+  document.getElementById('nav').classList.remove('open');
+  // ナビのactive表示更新
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+}
+
+// モバイルナビ開閉
+function toggleNav() {
+  document.getElementById('nav').classList.toggle('open');
+}
+
+// スクロールリビール（任意の演出）
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
