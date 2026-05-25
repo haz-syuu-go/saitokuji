@@ -150,6 +150,69 @@ img { max-width: 100%; display: block; }
 }
 .hero-slide.is-active { opacity: 1; }
 
+/* ============ ページ遷移のれんアニメーション ============ */
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translateY(-100%);
+  display: flex;
+  flex-direction: column;
+}
+.page-transition.is-active {
+  pointer-events: auto;
+  animation: norenSweep 1.4s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+.page-transition-top {
+  height: 22px;
+  background: var(--color-noren);
+  flex-shrink: 0;
+}
+.page-transition-cloth {
+  flex: 1;
+  background: var(--color-bg-paper);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.page-transition-cloth::before,
+.page-transition-cloth::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.06);
+}
+.page-transition-cloth::before { left: 33.3%; }
+.page-transition-cloth::after  { left: 66.6%; }
+.page-transition-title {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--color-dark);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  opacity: 0;
+  animation: norenTitleFade 1.4s ease forwards;
+}
+@keyframes norenSweep {
+  0%   { transform: translateY(-100%); }
+  40%  { transform: translateY(0); }
+  60%  { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+@keyframes norenTitleFade {
+  0%, 30%  { opacity: 0; }
+  45%, 60% { opacity: 1; }
+  85%, 100%{ opacity: 0; }
+}
+@media (max-width: 720px) {
+  .page-transition-title { font-size: 32px; letter-spacing: 0.4em; }
+}
+
 /* ヒーローのコピー */
 .hero-copy {
   position: absolute;
@@ -513,6 +576,14 @@ p { font-size: 13.5px; color: var(--color-text-soft); }
 </style>
 </head>
 <body>
+
+<!-- ============ ページ遷移のれんオーバーレイ ============ -->
+<div class="page-transition" id="pageTransition" aria-hidden="true">
+  <div class="page-transition-top"></div>
+  <div class="page-transition-cloth">
+    <div class="page-transition-title">最徳寺</div>
+  </div>
+</div>
 
 <!-- ============ ヘッダー（全ページ共通） ============ -->
 <header class="header">
@@ -898,18 +969,23 @@ p { font-size: 13.5px; color: var(--color-text-soft); }
 // ページ切り替え（SPA風フェードアニメーション）
 // ============================================
 function showPage(pageId) {
-  // 全ページを非表示
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // 対象ページを表示（CSSのpageFadeアニメーションが発火）
-  const target = document.getElementById('page-' + pageId);
-  if (target) {
-    target.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  // ナビ閉じる（モバイル）
-  document.getElementById('nav').classList.remove('open');
-  // ナビのactive表示更新
-  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  const overlay = document.getElementById('pageTransition');
+  // のれんアニメーション再生（クラスを一旦外して再付与でリスタート）
+  overlay.classList.remove('is-active');
+  void overlay.offsetWidth;
+  overlay.classList.add('is-active');
+
+  // のれんが画面を覆い切ったタイミングでページを切替（norenSweepの40%付近 = 約560ms）
+  setTimeout(() => {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    document.getElementById('nav').classList.remove('open');
+    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  }, 560);
 }
 
 // モバイルナビ開閉
