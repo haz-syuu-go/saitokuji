@@ -133,6 +133,30 @@ img { max-width: 100%; display: block; }
   align-items: center;
 }
 
+/* ヒーロー背景スライダー */
+.hero-slider {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.6s ease-in-out;
+}
+.hero-slide.is-active { opacity: 1; }
+.hero-slider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(244,238,225,0.35) 0%, rgba(244,238,225,0.55) 60%, rgba(244,238,225,0.75) 100%);
+  pointer-events: none;
+}
+
 /* のれん */
 .noren {
   position: absolute;
@@ -143,6 +167,7 @@ img { max-width: 100%; display: block; }
   pointer-events: none;
   animation: norenSway 6s ease-in-out infinite;
   transform-origin: top center;
+  z-index: 2;
 }
 @keyframes norenSway {
   0%, 100% { transform: translateX(-50%) rotate(-0.3deg); }
@@ -591,6 +616,12 @@ p { font-size: 13.5px; color: var(--color-text-soft); }
 
   <!-- ヒーロー -->
   <section class="hero">
+    <div class="hero-slider" id="heroSlider">
+      <div class="hero-slide is-active" style="background-image:url('images/DSC06385.jpg');"></div>
+      <div class="hero-slide" style="background-image:url('images/DSC06406.jpg');"></div>
+      <div class="hero-slide" style="background-image:url('images/DSC06364.jpg');"></div>
+      <div class="hero-slide" style="background-image:url('images/DSC06360.jpg');"></div>
+    </div>
     <div class="noren">
       <div class="noren-top"></div>
       <div class="noren-cloth">
@@ -972,6 +1003,20 @@ function showPage(pageId) {
 function toggleNav() {
   document.getElementById('nav').classList.toggle('open');
 }
+
+// ============================================
+// ヒーロー背景スライダー（フェード切替）
+// ============================================
+(function initHeroSlider() {
+  const slides = document.querySelectorAll('#heroSlider .hero-slide');
+  if (slides.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    slides[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+  }, 5500);
+})();
 
 // スクロールリビール（任意の演出）
 const observer = new IntersectionObserver((entries) => {
